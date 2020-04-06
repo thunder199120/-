@@ -1,0 +1,67 @@
+package cn.tedu.store.mapper;
+
+import java.util.Date;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import cn.tedu.store.entity.Cart;
+import cn.tedu.store.entity.User;
+import cn.tedu.store.vo.CartVO;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class CartMapperTests {
+	@Autowired
+	private CartMapper cartMapper;
+	@Test
+	public void insert(){
+		Cart cart = new Cart();
+		cart.setUid(1);
+		cart.setPid(2);
+		cart.setNum(3);
+		cart.setPrice(40L);
+		cart.setCreatedUser("传奇");
+		cart.setCreatedTime(new Date());
+		Integer rows = cartMapper.insert(cart);
+		System.err.println("rows="+rows);		
+	}
+	
+	@Test
+	public void updateNum(){
+		Integer rows = cartMapper.updateNum(1, 10, "成恒", new Date());
+		System.err.println(rows);
+	}
+	
+	
+	@Test
+	public void findByUidAndPid(){
+		Cart result = cartMapper.findByUidAndPid(1, 2);
+		System.err.println(result);
+	}
+	
+	@Test
+	public void findByUid(){
+		List<CartVO> result = cartMapper.findByUid(6);
+		for (CartVO cartVO : result) {
+			System.err.println(cartVO);
+		}
+		System.err.println("OK");
+	}
+	
+	@Test
+	public void findByCid(){
+		Cart result = cartMapper.findByCid(6);
+		System.err.println(result);
+	}
+	@Test
+	public void deleteByCids(){
+		Integer[] cids = {12,14,15,16};
+		Integer rows = cartMapper.deleteByCids(cids);
+		System.err.println(rows);
+	}
+}

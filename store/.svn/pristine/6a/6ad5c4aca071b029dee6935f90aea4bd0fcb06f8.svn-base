@@ -1,0 +1,53 @@
+package cn.tedu.store.service.Impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import cn.tedu.store.entity.Product;
+import cn.tedu.store.mapper.ProductMapper;
+import cn.tedu.store.service.IProductService;
+import cn.tedu.store.service.ex.ProductNotFoundException;
+@Service
+public class ProductServiceImpl implements IProductService {
+	@Autowired
+	private  ProductMapper productMapper;
+	private List<Product> findHotList(){
+		return productMapper.findHotList(); 
+	}
+	private Product findById(Integer id){
+		return productMapper.findById(id);
+	}
+	@Override
+	public List<Product> getHotList() {
+		List<Product> list  = findHotList();
+		for (Product product : list) {
+			product.setCategoryId(null);
+	        product.setItemType(null);
+	        product.setSellPoint(null);
+	        product.setNum(null);
+	        product.setStatus(null);
+	        product.setPriority(null);
+	        product.setCreatedUser(null);
+	        product.setCreatedTime(null);
+	        product.setModifiedUser(null);
+	        product.setModifiedTime(null);
+		}
+		return  list;
+	}
+	@Override
+	public Product getById(Integer id) throws ProductNotFoundException{
+		Product result = findById(id);
+		if(result == null){
+			throw new ProductNotFoundException("查询商品详情失败!查询数据不存在!");
+		}
+		result.setPriority(null);
+		result.setCreatedUser(null);
+		result.setCreatedTime(null);
+		result.setModifiedUser(null);
+		result.setModifiedTime(null);
+		return result;
+	}
+
+}
